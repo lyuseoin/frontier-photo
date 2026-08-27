@@ -12,9 +12,16 @@ import { PinIcon } from "@/components/icons";
 import { formatTimestampKo } from "@/lib/date";
 import type { Notice } from "@/lib/types";
 
-export function AdminNotices({ notices }: { notices: Notice[] }) {
+export function AdminNotices({
+  notices,
+  openId = null,
+}: {
+  notices: Notice[];
+  /** 공지 상세에서 '수정'으로 들어온 경우 그 공지의 폼을 바로 펼친다 */
+  openId?: string | null;
+}) {
   const [creating, setCreating] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(openId);
 
   return (
     <div className="space-y-4">

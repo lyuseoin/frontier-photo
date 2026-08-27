@@ -3,9 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
-  assertAdmin,
   createSession,
   destroySession,
+  isAdmin,
   isAdminPasswordConfigured,
   verifyPassword,
 } from "@/lib/auth";
@@ -20,6 +20,9 @@ function refresh() {
 function fail(message: string): ActionState {
   return { ok: false, message };
 }
+
+const SESSION_EXPIRED =
+  "로그인이 풀렸어요. /admin 에서 다시 로그인해 주세요.";
 
 const NOT_CONFIGURED =
   "서버 설정이 끝나지 않았습니다. Vercel 환경변수(Supabase 주소·키)를 확인해 주세요.";
@@ -60,7 +63,7 @@ export async function saveNotice(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  await assertAdmin();
+  if (!(await isAdmin())) return fail(SESSION_EXPIRED);
   const id = String(formData.get("id") ?? "");
   const title = String(formData.get("title") ?? "").trim();
   const content = String(formData.get("content") ?? "").trim();
@@ -80,14 +83,14 @@ export async function saveNotice(
 }
 
 export async function deleteNotice(formData: FormData) {
-  await assertAdmin();
+  if (!(await isAdmin())) return;
   const id = String(formData.get("id") ?? "");
   if (id) await db()?.from("notices").delete().eq("id", id);
   refresh();
 }
 
 export async function toggleNoticePin(formData: FormData) {
-  await assertAdmin();
+  if (!(await isAdmin())) return;
   const id = String(formData.get("id") ?? "");
   const next = formData.get("next") === "true";
   if (id) {
@@ -103,7 +106,7 @@ export async function saveEvent(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  await assertAdmin();
+  if (!(await isAdmin())) return fail(SESSION_EXPIRED);
   const id = String(formData.get("id") ?? "");
   const title = String(formData.get("title") ?? "").trim();
   const rawCategory = String(formData.get("category") ?? "activity");
@@ -139,7 +142,7 @@ export async function saveEvent(
 }
 
 export async function deleteEvent(formData: FormData) {
-  await assertAdmin();
+  if (!(await isAdmin())) return;
   const id = String(formData.get("id") ?? "");
   if (id) await db()?.from("events").delete().eq("id", id);
   refresh();
@@ -150,7 +153,7 @@ export async function saveDayTimetable(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  await assertAdmin();
+  if (!(await isAdmin())) return fail(SESSION_EXPIRED);
   const day = Number(formData.get("day_of_week"));
   if (!Number.isInteger(day) || day < 1 || day > 5) {
     return fail("요일 정보가 올바르지 않습니다.");
@@ -198,7 +201,7 @@ export async function saveDayTimetable(
 
 // ---------------------------------------------------------------- 민원함
 export async function setComplaintHandled(formData: FormData) {
-  await assertAdmin();
+  if (!(await isAdmin())) return;
   const id = String(formData.get("id") ?? "");
   const next = formData.get("next") === "true";
   if (id) {
@@ -217,7 +220,7 @@ export async function saveComplaintMemo(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  await assertAdmin();
+  if (!(await isAdmin())) return fail(SESSION_EXPIRED);
   const id = String(formData.get("id") ?? "");
   const memo = String(formData.get("admin_memo") ?? "").trim();
   if (!id) return fail("대상을 찾을 수 없습니다.");
@@ -232,7 +235,7 @@ export async function saveComplaintMemo(
 }
 
 export async function deleteComplaint(formData: FormData) {
-  await assertAdmin();
+  if (!(await isAdmin())) return;
   const id = String(formData.get("id") ?? "");
   if (id) await db()?.from("complaints").delete().eq("id", id);
   refresh();
@@ -243,7 +246,7 @@ export async function saveSettings(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  await assertAdmin();
+  if (!(await isAdmin())) return fail(SESSION_EXPIRED);
   const className = String(formData.get("class_name") ?? "").trim();
   const schoolName = String(formData.get("school_name") ?? "").trim();
   const tagline = String(formData.get("tagline") ?? "").trim();

@@ -6,6 +6,9 @@ import {
   SetupNotice,
 } from "@/components/ui";
 import { ChevronRightIcon, PinIcon } from "@/components/icons";
+import { AdminHomeStrip } from "@/components/AdminHomeStrip";
+import { isAdmin } from "@/lib/auth";
+import { getUnhandledComplaintCount } from "@/lib/adminData";
 import { getNotices, getSettings, getUpcomingEvents } from "@/lib/data";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import {
@@ -21,10 +24,12 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const today = todayKST();
-  const [settings, events, notices] = await Promise.all([
+  const [settings, events, notices, admin, unhandled] = await Promise.all([
     getSettings(),
     getUpcomingEvents(4),
     getNotices(3),
+    isAdmin(),
+    getUnhandledComplaintCount(),
   ]);
 
   return (
@@ -43,6 +48,8 @@ export default async function HomePage() {
           <p className="mt-1.5 text-sm text-brand-100">{settings.tagline}</p>
         ) : null}
       </section>
+
+      {admin ? <AdminHomeStrip unhandled={unhandled} /> : null}
 
       {/* 다가오는 일정 D-day */}
       <section>

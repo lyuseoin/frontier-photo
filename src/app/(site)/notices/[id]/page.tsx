@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PinIcon } from "@/components/icons";
+import { isAdmin } from "@/lib/auth";
 import { getNotice } from "@/lib/data";
 import { formatTimestampKo } from "@/lib/date";
 
@@ -12,17 +13,27 @@ export default async function NoticeDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const notice = await getNotice(id);
+  const [notice, admin] = await Promise.all([getNotice(id), isAdmin()]);
   if (!notice) notFound();
 
   return (
     <article>
-      <Link
-        href="/notices"
-        className="mb-4 inline-flex text-sm font-semibold text-slate-400 hover:text-brand-600"
-      >
-        ← 공지사항
-      </Link>
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <Link
+          href="/notices"
+          className="text-sm font-semibold text-slate-400 hover:text-brand-600"
+        >
+          ← 공지사항
+        </Link>
+        {admin ? (
+          <Link
+            href={`/notices?edit=1&open=${notice.id}`}
+            className="shrink-0 rounded-xl bg-brand-600 px-3.5 py-2 text-sm font-bold text-white hover:bg-brand-700"
+          >
+            이 공지 수정
+          </Link>
+        ) : null}
+      </div>
 
       <header className="mb-4 border-b border-slate-200 pb-4">
         {notice.is_pinned ? (
