@@ -6,8 +6,11 @@ const COOKIE_NAME = "class_admin_session";
 const MAX_AGE_SECONDS = 60 * 60 * 12; // 12시간
 
 function sessionSecret(): string {
+  // ?? 는 빈 문자열을 통과시키므로 || 를 쓴다 (값 없이 등록된 환경변수 대비)
   const secret =
-    process.env.ADMIN_SESSION_SECRET ?? process.env.ADMIN_PASSWORD ?? "";
+    process.env.ADMIN_SESSION_SECRET?.trim() ||
+    process.env.ADMIN_PASSWORD?.trim() ||
+    "";
   if (!secret) {
     throw new Error(
       "ADMIN_PASSWORD (또는 ADMIN_SESSION_SECRET) 환경변수가 설정되지 않았습니다.",
@@ -17,7 +20,7 @@ function sessionSecret(): string {
 }
 
 export function isAdminPasswordConfigured(): boolean {
-  return Boolean(process.env.ADMIN_PASSWORD);
+  return Boolean(process.env.ADMIN_PASSWORD?.trim());
 }
 
 function sign(value: string): string {
@@ -36,9 +39,9 @@ function safeEqual(a: string, b: string): boolean {
 
 /** 입력한 비밀번호가 맞는지 (타이밍 공격에 안전하게 비교) */
 export function verifyPassword(input: string): boolean {
-  const expected = process.env.ADMIN_PASSWORD;
+  const expected = process.env.ADMIN_PASSWORD?.trim();
   if (!expected) return false;
-  return safeEqual(input, expected);
+  return safeEqual(input.trim(), expected);
 }
 
 /** 로그인 성공 시 서명된 세션 쿠키를 굽는다 */

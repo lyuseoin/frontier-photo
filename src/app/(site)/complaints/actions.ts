@@ -1,6 +1,6 @@
 "use server";
 
-import { isSupabaseConfigured, supabasePublic } from "@/lib/supabase";
+import { supabasePublic } from "@/lib/supabase";
 import type { ComplaintFormState } from "@/lib/actionState";
 import { COMPLAINT_CATEGORIES } from "@/lib/types";
 
@@ -32,16 +32,15 @@ export async function submitComplaint(
   if (content.length > 2000) {
     return { status: "error", message: "내용은 2000자까지 쓸 수 있어요." };
   }
-  if (!isSupabaseConfigured()) {
+  const db = supabasePublic();
+  if (!db) {
     return {
       status: "error",
       message: "아직 서버 설정이 끝나지 않았어요. 반장에게 알려주세요.",
     };
   }
 
-  const { error } = await supabasePublic()
-    .from("complaints")
-    .insert({ category, content });
+  const { error } = await db.from("complaints").insert({ category, content });
 
   if (error) {
     return {

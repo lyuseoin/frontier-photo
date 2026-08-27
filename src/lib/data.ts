@@ -1,4 +1,4 @@
-import { isSupabaseConfigured, supabasePublic } from "@/lib/supabase";
+import { supabasePublic } from "@/lib/supabase";
 import { todayKST } from "@/lib/date";
 import type {
   ClassEvent,
@@ -17,8 +17,9 @@ export const DEFAULT_SETTINGS: ClassSettings = {
 
 /** 학급 설정 (없거나 실패하면 기본값) */
 export async function getSettings(): Promise<ClassSettings> {
-  if (!isSupabaseConfigured()) return DEFAULT_SETTINGS;
-  const { data, error } = await supabasePublic()
+  const db = supabasePublic();
+  if (!db) return DEFAULT_SETTINGS;
+  const { data, error } = await db
     .from("class_settings")
     .select("*")
     .eq("id", 1)
@@ -29,8 +30,9 @@ export async function getSettings(): Promise<ClassSettings> {
 
 /** 공지 목록 — 고정 공지가 항상 위 */
 export async function getNotices(limit?: number): Promise<Notice[]> {
-  if (!isSupabaseConfigured()) return [];
-  let query = supabasePublic()
+  const db = supabasePublic();
+  if (!db) return [];
+  let query = db
     .from("notices")
     .select("*")
     .order("is_pinned", { ascending: false })
@@ -42,8 +44,9 @@ export async function getNotices(limit?: number): Promise<Notice[]> {
 }
 
 export async function getNotice(id: string): Promise<Notice | null> {
-  if (!isSupabaseConfigured()) return null;
-  const { data, error } = await supabasePublic()
+  const db = supabasePublic();
+  if (!db) return null;
+  const { data, error } = await db
     .from("notices")
     .select("*")
     .eq("id", id)
@@ -54,8 +57,9 @@ export async function getNotice(id: string): Promise<Notice | null> {
 
 /** 전체 일정 (달력·목록 공용) */
 export async function getEvents(): Promise<ClassEvent[]> {
-  if (!isSupabaseConfigured()) return [];
-  const { data, error } = await supabasePublic()
+  const db = supabasePublic();
+  if (!db) return [];
+  const { data, error } = await db
     .from("events")
     .select("*")
     .order("start_date", { ascending: true });
@@ -75,8 +79,9 @@ export async function getUpcomingEvents(limit = 4): Promise<ClassEvent[]> {
 
 /** 시간표 전체 */
 export async function getTimetable(): Promise<TimetableSlot[]> {
-  if (!isSupabaseConfigured()) return [];
-  const { data, error } = await supabasePublic()
+  const db = supabasePublic();
+  if (!db) return [];
+  const { data, error } = await db
     .from("timetable")
     .select("*")
     .order("day_of_week", { ascending: true })
