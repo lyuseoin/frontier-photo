@@ -70,8 +70,11 @@ export function SetupNotice() {
     <div className="mb-4 rounded-2xl border border-accent-400/40 bg-accent-50 px-4 py-3 text-sm text-amber-800">
       <p className="font-bold">Supabase 연결이 아직 설정되지 않았어요.</p>
       <p className="mt-1 leading-relaxed text-amber-700">
-        README의 안내에 따라 <code>.env.local</code>(또는 Vercel 환경변수)에
-        Supabase 주소와 키를 넣어주세요.
+        <code>.env.local</code>(또는 Vercel 환경변수)에 Supabase 주소와 키를
+        넣어주세요.{" "}
+        <Link href="/setup-check" className="font-bold underline">
+          무엇이 빠졌는지 확인하기 →
+        </Link>
       </p>
     </div>
   );

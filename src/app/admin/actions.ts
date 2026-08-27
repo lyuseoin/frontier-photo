@@ -21,6 +21,14 @@ function fail(message: string): ActionState {
   return { ok: false, message };
 }
 
+const NOT_CONFIGURED =
+  "서버 설정이 끝나지 않았습니다. Vercel 환경변수(Supabase 주소·키)를 확인해 주세요.";
+
+/** service_role 클라이언트를 꺼낸다. 설정이 없으면 null */
+function db() {
+  return supabaseAdmin();
+}
+
 function done(message: string): ActionState {
   refresh();
   return { ok: true, message };
@@ -61,10 +69,11 @@ export async function saveNotice(
   if (!title) return fail("제목을 입력해 주세요.");
 
   const payload = { title, content, is_pinned: isPinned };
-  const db = supabaseAdmin();
+  const client = db();
+  if (!client) return fail(NOT_CONFIGURED);
   const { error } = id
-    ? await db.from("notices").update(payload).eq("id", id)
-    : await db.from("notices").insert(payload);
+    ? await client.from("notices").update(payload).eq("id", id)
+    : await client.from("notices").insert(payload);
 
   if (error) return fail(`저장 실패: ${error.message}`);
   return done(id ? "공지를 수정했습니다." : "공지를 등록했습니다.");
@@ -73,7 +82,7 @@ export async function saveNotice(
 export async function deleteNotice(formData: FormData) {
   await assertAdmin();
   const id = String(formData.get("id") ?? "");
-  if (id) await supabaseAdmin().from("notices").delete().eq("id", id);
+  if (id) await db()?.from("notices").delete().eq("id", id);
   refresh();
 }
 
@@ -82,10 +91,7 @@ export async function toggleNoticePin(formData: FormData) {
   const id = String(formData.get("id") ?? "");
   const next = formData.get("next") === "true";
   if (id) {
-    await supabaseAdmin()
-      .from("notices")
-      .update({ is_pinned: next })
-      .eq("id", id);
+    await db()?.from("notices").update({ is_pinned: next }).eq("id", id);
   }
   refresh();
 }
@@ -122,10 +128,11 @@ export async function saveEvent(
     end_date: endDate,
     description,
   };
-  const db = supabaseAdmin();
+  const client = db();
+  if (!client) return fail(NOT_CONFIGURED);
   const { error } = id
-    ? await db.from("events").update(payload).eq("id", id)
-    : await db.from("events").insert(payload);
+    ? await client.from("events").update(payload).eq("id", id)
+    : await client.from("events").insert(payload);
 
   if (error) return fail(`저장 실패: ${error.message}`);
   return done(id ? "일정을 수정했습니다." : "일정을 등록했습니다.");
@@ -134,7 +141,7 @@ export async function saveEvent(
 export async function deleteEvent(formData: FormData) {
   await assertAdmin();
   const id = String(formData.get("id") ?? "");
-  if (id) await supabaseAdmin().from("events").delete().eq("id", id);
+  if (id) await db()?.from("events").delete().eq("id", id);
   refresh();
 }
 
@@ -149,7 +156,8 @@ export async function saveDayTimetable(
     return fail("요일 정보가 올바르지 않습니다.");
   }
 
-  const db = supabaseAdmin();
+  const client = db();
+  if (!client) return fail(NOT_CONFIGURED);
   const upserts: {
     day_of_week: number;
     period: number;
@@ -171,13 +179,13 @@ export async function saveDayTimetable(
   }
 
   if (upserts.length > 0) {
-    const { error } = await db
+    const { error } = await client
       .from("timetable")
       .upsert(upserts, { onConflict: "day_of_week,period" });
     if (error) return fail(`저장 실패: ${error.message}`);
   }
   if (emptyPeriods.length > 0) {
-    const { error } = await db
+    const { error } = await client
       .from("timetable")
       .delete()
       .eq("day_of_week", day)
@@ -194,8 +202,8 @@ export async function setComplaintHandled(formData: FormData) {
   const id = String(formData.get("id") ?? "");
   const next = formData.get("next") === "true";
   if (id) {
-    await supabaseAdmin()
-      .from("complaints")
+    await db()
+      ?.from("complaints")
       .update({
         is_handled: next,
         handled_at: next ? new Date().toISOString() : null,
@@ -213,7 +221,9 @@ export async function saveComplaintMemo(
   const id = String(formData.get("id") ?? "");
   const memo = String(formData.get("admin_memo") ?? "").trim();
   if (!id) return fail("대상을 찾을 수 없습니다.");
-  const { error } = await supabaseAdmin()
+  const client = db();
+  if (!client) return fail(NOT_CONFIGURED);
+  const { error } = await client
     .from("complaints")
     .update({ admin_memo: memo })
     .eq("id", id);
@@ -224,7 +234,7 @@ export async function saveComplaintMemo(
 export async function deleteComplaint(formData: FormData) {
   await assertAdmin();
   const id = String(formData.get("id") ?? "");
-  if (id) await supabaseAdmin().from("complaints").delete().eq("id", id);
+  if (id) await db()?.from("complaints").delete().eq("id", id);
   refresh();
 }
 
@@ -240,7 +250,9 @@ export async function saveSettings(
 
   if (!className) return fail("학급 이름을 입력해 주세요.");
 
-  const { error } = await supabaseAdmin().from("class_settings").upsert({
+  const client = db();
+  if (!client) return fail(NOT_CONFIGURED);
+  const { error } = await client.from("class_settings").upsert({
     id: 1,
     class_name: className,
     school_name: schoolName,
