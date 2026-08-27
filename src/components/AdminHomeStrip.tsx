@@ -2,11 +2,11 @@ import Link from "next/link";
 import { SettingsIcon } from "@/components/icons";
 
 const LINKS = [
-  { href: "/notices?edit=1", label: "공지" },
-  { href: "/schedule?edit=1", label: "일정" },
-  { href: "/timetable?edit=1", label: "시간표" },
-  { href: "/admin/complaints", label: "민원함" },
-  { href: "/admin/settings", label: "학급 이름" },
+  { href: "/notices?edit=1", label: "공지 편집" },
+  { href: "/schedule?edit=1", label: "일정 편집" },
+  { href: "/timetable?edit=1", label: "시간표 편집" },
+  { href: "/admin/complaints", label: "민원함 확인" },
+  { href: "/admin/settings", label: "학급 이름 바꾸기" },
 ];
 
 /** 홈에서 관리자에게만 보이는 편집 진입점 */
@@ -29,7 +29,7 @@ export function AdminHomeStrip({ unhandled }: { unhandled: number }) {
               href={link.href}
               className="inline-flex rounded-xl bg-white px-3 py-2 text-sm font-bold text-brand-700 ring-1 ring-brand-100 transition hover:bg-brand-600 hover:text-white"
             >
-              {link.label} 편집
+              {link.label}
             </Link>
           </li>
         ))}
