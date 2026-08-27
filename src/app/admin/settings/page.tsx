@@ -11,7 +11,7 @@ export default async function AdminSettingsPage() {
     <>
       <PageTitle
         title="설정"
-        description="학급 이름과 소개 문구를 바꿀 수 있어요."
+        description="건의함 상단에 보이는 이름을 바꿀 수 있어요."
       />
       <AdminSettings settings={settings} />
 

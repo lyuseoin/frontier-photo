@@ -25,7 +25,7 @@ export function AdminSettings({ settings }: { settings: ClassSettings }) {
           placeholder="예) 2학년 3반"
         />
         <p className="mt-1 text-xs text-slate-400">
-          홈페이지 상단과 브라우저 탭 제목에 표시돼요.
+          건의함 상단과 브라우저 탭 제목에 표시돼요.
         </p>
       </div>
 

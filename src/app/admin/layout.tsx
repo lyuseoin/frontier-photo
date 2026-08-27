@@ -40,7 +40,7 @@ export default async function AdminLayout({
               href="/"
               className="rounded-full px-3 py-1.5 text-xs font-bold text-slate-500 ring-1 ring-slate-200 hover:bg-slate-50"
             >
-              홈페이지
+              건의함
             </Link>
             <form action={logout}>
               <button

@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { submitComplaint } from "@/app/(site)/complaints/actions";
+import { submitComplaint } from "@/app/(site)/actions";
 import { initialComplaintState } from "@/lib/actionState";
 import { COMPLAINT_CATEGORIES } from "@/lib/types";
 import { CheckIcon } from "@/components/icons";

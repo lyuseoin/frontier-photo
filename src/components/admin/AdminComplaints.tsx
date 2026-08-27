@@ -58,7 +58,7 @@ export function AdminComplaints({ complaints }: { complaints: Complaint[] }) {
 
       {visible.length === 0 ? (
         <p className="rounded-2xl border border-dashed border-slate-200 bg-white px-4 py-10 text-center text-sm text-slate-400">
-          표시할 민원이 없습니다.
+          표시할 건의가 없습니다.
         </p>
       ) : (
         <ul className="space-y-2">
@@ -165,7 +165,7 @@ function ComplaintCard({ complaint }: { complaint: Complaint }) {
           <form action={deleteComplaint} className="ml-auto">
             <input type="hidden" name="id" value={complaint.id} />
             <ConfirmButton
-              message="이 민원을 삭제할까요? 되돌릴 수 없어요."
+              message="이 건의를 삭제할까요? 되돌릴 수 없어요."
               className="btn-danger px-3 py-2 text-xs"
             >
               삭제

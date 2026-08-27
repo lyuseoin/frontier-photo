@@ -1,5 +1,4 @@
 import { SiteHeader } from "@/components/SiteHeader";
-import { BottomNav } from "@/components/SiteNav";
 import { isAdmin } from "@/lib/auth";
 import { getSettings } from "@/lib/data";
 
@@ -16,15 +15,13 @@ export default async function SiteLayout({
     <div className="flex min-h-dvh flex-col">
       <SiteHeader settings={settings} showAdminLink={admin} />
 
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 pb-28 pt-5 md:pb-12">
+      <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6">
         {children}
       </main>
 
-      <footer className="mx-auto hidden w-full max-w-3xl px-4 pb-8 text-xs text-slate-400 md:block">
-        {settings.class_name} 학급 홈페이지
+      <footer className="mx-auto w-full max-w-lg px-4 pb-8 text-xs text-slate-400">
+        {settings.class_name} 익명 건의함
       </footer>
-
-      <BottomNav />
     </div>
   );
 }

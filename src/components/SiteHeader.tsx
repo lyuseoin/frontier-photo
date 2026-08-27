@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { TopNav } from "@/components/SiteNav";
 import { SettingsIcon } from "@/components/icons";
 import type { ClassSettings } from "@/lib/types";
 
@@ -11,8 +10,8 @@ export function SiteHeader({
   showAdminLink: boolean;
 }) {
   return (
-    <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3.5">
+    <header className="border-b border-slate-200 bg-white">
+      <div className="mx-auto flex max-w-lg items-center justify-between gap-3 px-4 py-3.5">
         <Link href="/" className="min-w-0">
           {settings.school_name ? (
             <p className="truncate text-xs font-medium text-slate-400">
@@ -21,7 +20,7 @@ export function SiteHeader({
           ) : null}
           <p className="truncate text-lg font-extrabold tracking-tight text-slate-900">
             {settings.class_name}
-            <span className="ml-1.5 text-brand-600">홈페이지</span>
+            <span className="ml-1.5 text-brand-600">건의함</span>
           </p>
         </Link>
 
@@ -36,7 +35,6 @@ export function SiteHeader({
           </Link>
         ) : null}
       </div>
-      <TopNav />
     </header>
   );
 }

@@ -4,11 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const TABS = [
-  { href: "/admin", label: "요약" },
-  { href: "/admin/notices", label: "공지" },
-  { href: "/admin/events", label: "일정" },
-  { href: "/admin/timetable", label: "시간표" },
-  { href: "/admin/complaints", label: "민원함" },
+  { href: "/admin", label: "받은 건의" },
   { href: "/admin/settings", label: "설정" },
 ];
 
