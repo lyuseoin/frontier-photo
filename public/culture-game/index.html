@@ -1,0 +1,1128 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="여섯 나라를 돌며 문화 퀴즈를 풀고 입국 도장을 모으는 문화 탐구 게임.">
+<style>
+  body { margin: 0; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+<title>세계 문화 탐험 여권</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@300;400;500;600&display=swap">
+</head>
+<body>
+
+<style>
+  :root {
+    color-scheme: light;
+    --paper:      #EDEAE2;
+    --surface:    #F8F6F1;
+    --surface-2:  #E4E0D5;
+    --ink:        #171A21;
+    --ink-soft:   #4A505F;
+    --ink-faint:  #797F8E;
+    --rule:       #D5D0C4;
+    --rule-firm:  #B9B3A3;
+    --indigo:     #2B3F86;
+    --indigo-bg:  #E1E5F2;
+    --madder:     #A23B29;
+    --madder-bg:  #F6E4DF;
+    --ochre:      #A8781F;
+    --green:      #2C6B4E;
+    --green-bg:   #DEEDE4;
+
+    /* 염료 견본 — 내용이므로 두 테마에서 동일 */
+    --dye-indigo:   #26397A;
+    --dye-indigo-d: #1B2A5C;
+    --dye-madder:   #A83E2B;
+    --dye-ochre:    #C9922F;
+    --dye-cream:    #EFE7D6;
+    --dye-ink:      #1A1A1E;
+    --dye-green:    #2C6B4E;
+    --dye-soga:     #77471F;
+
+    --step: clamp(1rem, 0.6rem + 1.4vw, 1.6rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper:     #14161C;
+      --surface:   #1C1F27;
+      --surface-2: #262A34;
+      --ink:       #EDEBE5;
+      --ink-soft:  #AFB5C1;
+      --ink-faint: #838A99;
+      --rule:      #2E323C;
+      --rule-firm: #474D5A;
+      --indigo:    #9DB1EE;
+      --indigo-bg: #222739;
+      --madder:    #E9917A;
+      --madder-bg: #35211D;
+      --ochre:     #DCAF57;
+      --green:     #77C79E;
+      --green-bg:  #1B2E26;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper:     #14161C;
+    --surface:   #1C1F27;
+    --surface-2: #262A34;
+    --ink:       #EDEBE5;
+    --ink-soft:  #AFB5C1;
+    --ink-faint: #838A99;
+    --rule:      #2E323C;
+    --rule-firm: #474D5A;
+    --indigo:    #9DB1EE;
+    --indigo-bg: #222739;
+    --madder:    #E9917A;
+    --madder-bg: #35211D;
+    --ochre:     #DCAF57;
+    --green:     #77C79E;
+    --green-bg:  #1B2E26;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+    padding: var(--step) var(--step) 3rem;
+  }
+
+  h1, h2, h3 {
+    font-family: "Gowun Batang", "Apple SD Gothic Neo", serif;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.32;
+    text-wrap: balance;
+    letter-spacing: -0.015em;
+  }
+  p { margin: 0; }
+
+  .mono {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  :focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  /* ── 문양 견본 ─────────────────────────────── */
+
+  .swatch { background-color: var(--dye-cream); height: 100%; }
+
+  .sw-peru {
+    background-image: repeating-linear-gradient(180deg,
+      var(--dye-madder) 0 9px, var(--dye-cream) 9px 13px, var(--dye-ink) 13px 16px,
+      var(--dye-ochre) 16px 22px, var(--dye-cream) 22px 25px,
+      var(--dye-indigo) 25px 34px, var(--dye-cream) 34px 38px);
+  }
+  .sw-morocco {
+    background-image:
+      radial-gradient(circle at 50% 50%, var(--dye-ochre) 0 2.5px, transparent 3px),
+      repeating-linear-gradient(45deg, var(--dye-indigo) 0 2px, transparent 2px 19px),
+      repeating-linear-gradient(-45deg, var(--dye-indigo) 0 2px, transparent 2px 19px);
+    background-size: 27px 27px, auto, auto;
+    background-position: 13px 13px, 0 0, 0 0;
+  }
+  .sw-indonesia {
+    background-image: repeating-linear-gradient(114deg,
+      var(--dye-soga) 0 11px, var(--dye-cream) 11px 15px, var(--dye-indigo) 15px 19px,
+      var(--dye-cream) 19px 23px, var(--dye-soga) 23px 26px, var(--dye-cream) 26px 34px);
+  }
+  .sw-mongolia {
+    background-image:
+      radial-gradient(circle at 50% 50%, var(--dye-madder) 0 3px, transparent 3.5px),
+      repeating-linear-gradient(0deg, var(--dye-indigo) 0 2px, transparent 2px 19px),
+      repeating-linear-gradient(90deg, var(--dye-indigo) 0 2px, transparent 2px 19px);
+    background-size: 19px 19px, auto, auto;
+    background-position: 9.5px 9.5px, 0 0, 0 0;
+  }
+  .sw-ghana {
+    background-image:
+      repeating-linear-gradient(0deg, rgba(26,26,30,0.85) 0 4px, transparent 4px 17px),
+      repeating-linear-gradient(90deg, var(--dye-ochre) 0 15px, var(--dye-ink) 15px 19px,
+        var(--dye-green) 19px 29px, var(--dye-madder) 29px 33px, var(--dye-ochre) 33px 40px);
+  }
+  .sw-mexico {
+    background-image:
+      linear-gradient(180deg, var(--dye-ochre) 0 7px, transparent 7px),
+      radial-gradient(circle at 50% 50%, var(--dye-cream) 0 5px, transparent 5.5px),
+      radial-gradient(circle at 50% 50%, var(--dye-indigo) 0 2px, transparent 2.5px),
+      linear-gradient(var(--dye-madder), var(--dye-madder));
+    background-size: auto, 24px 24px, 24px 24px, auto;
+    background-position: 0 0, 12px 18px, 0 6px, 0 0;
+  }
+
+  /* ── 여권 본체 ─────────────────────────────── */
+
+  .book { max-width: 720px; margin: 0 auto; }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--rule-firm);
+    border-bottom: none;
+    background: var(--surface-2);
+    color: var(--ink-soft);
+  }
+  .topbar .mono { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .pips { display: flex; gap: 5px; }
+  .pip {
+    width: 11px; height: 11px;
+    border: 1px solid var(--rule-firm);
+    background: transparent;
+    transform: rotate(45deg);
+  }
+  .pip.on { background: var(--madder); border-color: var(--madder); }
+
+  .panel {
+    border: 1px solid var(--rule-firm);
+    background: var(--surface);
+    padding: clamp(1.4rem, 4vw, 2.6rem);
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .screen[hidden] { display: none !important; }
+  .screen { animation: pageIn 0.32s ease both; }
+  @keyframes pageIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* ── 표지(시작) ─────────────────────────────── */
+
+  .cover {
+    background: var(--dye-indigo);
+    background-image:
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 9px);
+    color: var(--dye-cream);
+    border: 1px solid var(--dye-indigo-d);
+    padding: clamp(1.8rem, 5vw, 3rem) clamp(1.4rem, 4vw, 2.4rem);
+    position: relative;
+  }
+  .cover::after {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    border: 1px solid rgba(201, 146, 47, 0.55);
+    pointer-events: none;
+  }
+  .cover .mono { color: var(--dye-ochre); display: block; margin-bottom: 1.4rem; }
+  .cover h1 {
+    font-size: clamp(2.1rem, 1.2rem + 3.8vw, 3.1rem);
+    color: var(--dye-cream);
+    line-height: 1.1;
+  }
+  .cover h1 em {
+    display: block;
+    font-style: normal;
+    font-size: 0.36em;
+    font-weight: 400;
+    color: rgba(239, 231, 214, 0.78);
+    letter-spacing: 0.04em;
+    margin-top: 0.9rem;
+  }
+  .seal {
+    width: 62px; height: 62px;
+    border: 2px solid var(--dye-ochre);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    margin: 1.8rem 0 0;
+    color: var(--dye-ochre);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-align: center;
+    line-height: 1.25;
+  }
+
+  .rules {
+    list-style: none;
+    margin: 1.8rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    counter-reset: r;
+  }
+  .rules li {
+    display: grid;
+    grid-template-columns: 1.7rem minmax(0, 1fr);
+    gap: 0.7rem;
+    color: var(--ink-soft);
+    font-size: 0.94rem;
+  }
+  .rules li::before {
+    counter-increment: r;
+    content: counter(r, decimal-leading-zero);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.7rem;
+    color: var(--indigo);
+    padding-top: 0.28rem;
+  }
+
+  /* ── 버튼 ─────────────────────────────────── */
+
+  .actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: auto; padding-top: 1.8rem; }
+
+  .btn {
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.7rem 1.5rem;
+    border: 1px solid var(--indigo);
+    background: var(--indigo);
+    color: var(--paper);
+    cursor: pointer;
+    transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+  }
+  .btn:hover { opacity: 0.86; }
+  .btn.ghost { background: transparent; color: var(--ink-soft); border-color: var(--rule-firm); }
+  .btn.ghost:hover { color: var(--indigo); border-color: var(--indigo); opacity: 1; }
+  .btn.big { padding: 0.9rem 2.4rem; font-size: 1.05rem; }
+
+  /* ── 역할 고르기 ───────────────────────────── */
+
+  .head { margin-bottom: 1.6rem; }
+  .head .mono { color: var(--ink-faint); display: block; margin-bottom: 0.6rem; }
+  .head h2 { font-size: clamp(1.35rem, 1.1rem + 1vw, 1.75rem); }
+  .head p { color: var(--ink-soft); font-size: 0.95rem; margin-top: 0.6rem; max-width: 52ch; }
+
+  .roles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0.7rem; }
+  .role-btn {
+    text-align: left;
+    font-family: inherit;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 0.9rem 1rem;
+    cursor: pointer;
+    color: var(--ink);
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .role-btn:hover { border-color: var(--indigo); }
+  .role-btn[aria-pressed="true"] { border-color: var(--indigo); background: var(--indigo-bg); }
+  .role-btn b { display: block; font-family: "Gowun Batang", serif; font-size: 1.05rem; font-weight: 700; }
+  .role-btn span { display: block; font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.2rem; }
+
+  /* ── 여권 지면 (나라 선택) ─────────────────── */
+
+  .pages { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.8rem; }
+
+  .page-btn {
+    position: relative;
+    font-family: inherit;
+    text-align: left;
+    padding: 0;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    cursor: pointer;
+    color: var(--ink);
+    overflow: hidden;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .page-btn:hover { border-color: var(--rule-firm); transform: translateY(-2px); }
+  .page-btn .band { height: 46px; border-bottom: 1px solid var(--rule); }
+  .page-btn .meta { padding: 0.7rem 0.85rem 0.85rem; }
+  .page-btn .meta .mono { color: var(--ink-faint); display: block; }
+  .page-btn .meta b { font-family: "Gowun Batang", serif; font-size: 1.15rem; font-weight: 700; display: block; margin-top: 0.2rem; }
+  .page-btn .meta i { font-style: normal; font-size: 0.8rem; color: var(--ink-faint); }
+  .page-btn .score { display: block; margin-top: 0.45rem; font-size: 0.83rem; color: var(--green); font-weight: 500; }
+  .page-btn .score.todo { color: var(--ink-faint); font-weight: 400; }
+
+  .mark {
+    position: absolute;
+    right: 0.6rem;
+    top: 52px;
+    border: 2px solid var(--madder);
+    color: var(--madder);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.45rem;
+    transform: rotate(-11deg);
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+  }
+
+  /* ── 퀴즈 ─────────────────────────────────── */
+
+  .qbar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.7rem;
+    margin-bottom: 1.4rem;
+  }
+  .qbar .mono { color: var(--ink-faint); }
+  .qbar b { font-family: "Gowun Batang", serif; font-size: 1.05rem; }
+
+  .qtype {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    border: 1px solid currentColor;
+    padding: 0.1rem 0.45rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .qtext {
+    font-family: "Gowun Batang", serif;
+    font-weight: 700;
+    font-size: clamp(1.2rem, 1rem + 0.9vw, 1.5rem);
+    line-height: 1.45;
+    margin-bottom: 1.4rem;
+  }
+
+  .opts { display: flex; flex-direction: column; gap: 0.55rem; }
+
+  .opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    text-align: left;
+    font-family: inherit;
+    font-size: 0.98rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .opt:hover:not(:disabled) { border-color: var(--indigo); }
+  .opt:disabled { cursor: default; }
+  .opt .key {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    padding-top: 0.18rem;
+    flex: 0 0 auto;
+  }
+  .opt.right { border-color: var(--green); background: var(--green-bg); }
+  .opt.right .key { color: var(--green); }
+  .opt.wrong { border-color: var(--madder); background: var(--madder-bg); }
+  .opt.wrong .key { color: var(--madder); }
+  .opt.dim { opacity: 0.55; }
+
+  .why {
+    margin-top: 1.3rem;
+    border-left: 3px solid var(--indigo);
+    background: var(--indigo-bg);
+    padding: 0.9rem 1.1rem;
+  }
+  .why .mono { display: block; margin-bottom: 0.35rem; }
+  .why.ok { border-left-color: var(--green); background: var(--green-bg); }
+  .why.no { border-left-color: var(--madder); background: var(--madder-bg); }
+  .why.ok .mono { color: var(--green); }
+  .why.no .mono { color: var(--madder); }
+  .why p { font-size: 0.93rem; color: var(--ink-soft); }
+
+  /* ── 도장 ─────────────────────────────────── */
+
+  .stamp-area { display: flex; justify-content: center; padding: 1.6rem 0 0.6rem; }
+
+  .stamp {
+    border: 3px double var(--madder);
+    color: var(--madder);
+    padding: 0.9rem 1.6rem;
+    text-align: center;
+    transform: rotate(-8deg);
+    animation: thunk 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  }
+  .stamp .mono { display: block; font-size: 0.6rem; }
+  .stamp strong { display: block; font-family: "Gowun Batang", serif; font-size: 1.7rem; line-height: 1.2; margin: 0.15rem 0; }
+  @keyframes thunk {
+    0%   { transform: rotate(-20deg) scale(2.1); opacity: 0; }
+    60%  { transform: rotate(-6deg) scale(0.94); opacity: 1; }
+    100% { transform: rotate(-8deg) scale(1); opacity: 1; }
+  }
+
+  .miss {
+    border: 2px dashed var(--rule-firm);
+    color: var(--ink-faint);
+    padding: 0.9rem 1.6rem;
+    text-align: center;
+  }
+  .miss strong { display: block; font-family: "Gowun Batang", serif; font-size: 1.35rem; color: var(--ink-soft); }
+
+  .tally {
+    text-align: center;
+    margin-top: 1.2rem;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  .tally b { color: var(--ink); font-size: 1.5rem; font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
+
+  .mission {
+    margin-top: 1.6rem;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    padding: 1rem 1.1rem;
+  }
+  .mission .mono { color: var(--ochre); display: block; margin-bottom: 0.35rem; }
+  .mission p { font-size: 0.93rem; color: var(--ink-soft); }
+  .mission p + p { margin-top: 0.5rem; }
+  .mission strong { color: var(--ink); font-weight: 600; }
+
+  /* ── 최종 ─────────────────────────────────── */
+
+  .grade { text-align: center; padding: 0.8rem 0 0; }
+  .grade .mono { color: var(--ink-faint); display: block; margin-bottom: 0.8rem; }
+  .grade h2 { font-size: clamp(1.7rem, 1.2rem + 2vw, 2.4rem); color: var(--indigo); }
+  .grade p { color: var(--ink-soft); margin-top: 0.7rem; font-size: 0.96rem; }
+
+  .stamp-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+    gap: 0.6rem;
+    margin: 1.8rem 0 0;
+  }
+  .mini-stamp {
+    border: 2px solid var(--rule-firm);
+    color: var(--ink-faint);
+    text-align: center;
+    padding: 0.55rem 0.3rem;
+    font-size: 0.85rem;
+  }
+  .mini-stamp.got {
+    border-style: double;
+    border-width: 3px;
+    border-color: var(--madder);
+    color: var(--madder);
+    transform: rotate(-4deg);
+  }
+  .mini-stamp .mono { display: block; font-size: 0.55rem; }
+
+  footer {
+    max-width: 720px;
+    margin: 1.1rem auto 0;
+    color: var(--ink-faint);
+    font-size: 0.8rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.4rem 1rem;
+  }
+</style>
+
+<div class="book">
+
+  <div class="topbar">
+    <span class="mono" id="tally-text">도장 0 / 6 · 정답 0 / 24</span>
+    <span class="pips" id="pips" aria-hidden="true"></span>
+  </div>
+
+  <div class="panel">
+
+    <!-- ══ 시작 ══ -->
+    <section class="screen" id="s-start">
+      <div class="cover">
+        <span class="mono">Explorer&rsquo;s Passport · 문화 탐험 여권</span>
+        <h1>세계 문화 탐험<em>여섯 나라를 돌며 퀴즈를 풀고 입국 도장을 모읍니다</em></h1>
+        <div class="seal" aria-hidden="true">6<br>PAGES</div>
+      </div>
+      <ol class="rules">
+        <li><span>나라마다 문제 4개. <strong>3개 이상</strong> 맞히면 그 나라의 입국 도장을 받습니다.</span></li>
+        <li><span>틀려도 괜찮습니다. 모든 문제에 <strong>해설</strong>이 붙어 있고, 해설이 진짜 내용입니다.</span></li>
+        <li><span>도장 여섯 개를 다 모으면 등급과 <strong>역할별 체험 미션</strong>이 나옵니다.</span></li>
+      </ol>
+      <div class="actions">
+        <button class="btn big" id="go-start" type="button">탐험 시작</button>
+        <button class="btn ghost" id="go-resume" type="button" hidden>이어하기</button>
+      </div>
+    </section>
+
+    <!-- ══ 역할 고르기 ══ -->
+    <section class="screen" id="s-role" hidden>
+      <div class="head">
+        <span class="mono">Step 1 · 역할 정하기</span>
+        <h2>탐험대에서 어떤 몫을 맡을까요?</h2>
+        <p>혼자 하는 탐험이 아닙니다. 고른 역할에 따라 마지막에 받는 체험 미션이 달라집니다.
+          모둠이라면 서로 다른 역할을 하나씩 나눠 가지세요.</p>
+      </div>
+      <div class="roles" id="role-list"></div>
+      <div class="actions">
+        <button class="btn" id="go-passport" type="button" disabled>여권 펼치기</button>
+      </div>
+    </section>
+
+    <!-- ══ 여권 (나라 선택) ══ -->
+    <section class="screen" id="s-passport" hidden>
+      <div class="head">
+        <span class="mono">Step 2 · 입국 심사</span>
+        <h2 id="passport-title">어느 나라부터 갈까요?</h2>
+        <p id="passport-sub">각 지면의 무늬는 그 문화가 실제로 짜거나 새기는 문양입니다. 하나를 골라 들어가세요.</p>
+      </div>
+      <div class="pages" id="page-list"></div>
+      <div class="actions">
+        <button class="btn ghost" id="go-reset" type="button">처음부터 다시</button>
+      </div>
+    </section>
+
+    <!-- ══ 퀴즈 ══ -->
+    <section class="screen" id="s-quiz" hidden>
+      <div class="qbar">
+        <b id="q-country">—</b>
+        <span class="mono" id="q-count">Q1 / 4</span>
+      </div>
+      <span class="qtype" id="q-type">객관식</span>
+      <p class="qtext" id="q-text">—</p>
+      <div class="opts" id="q-opts"></div>
+      <div class="why" id="q-why" hidden aria-live="polite">
+        <span class="mono" id="why-label">해설</span>
+        <p id="why-text"></p>
+      </div>
+      <div class="actions">
+        <button class="btn" id="go-next" type="button" hidden>다음</button>
+        <button class="btn ghost" id="go-quit" type="button">여권으로 돌아가기</button>
+      </div>
+    </section>
+
+    <!-- ══ 나라 결과 ══ -->
+    <section class="screen" id="s-result" hidden>
+      <div class="stamp-area" id="result-stamp"></div>
+      <p class="tally" id="result-tally"></p>
+      <div class="mission" id="result-note"></div>
+      <div class="actions">
+        <button class="btn" id="go-back" type="button">여권으로</button>
+        <button class="btn ghost" id="go-retry" type="button">이 나라 다시 풀기</button>
+      </div>
+    </section>
+
+    <!-- ══ 최종 ══ -->
+    <section class="screen" id="s-final" hidden>
+      <div class="grade">
+        <span class="mono">Final · 탐험 기록</span>
+        <h2 id="final-grade">—</h2>
+        <p id="final-line"></p>
+      </div>
+      <div class="stamp-row" id="final-stamps"></div>
+      <div class="mission" id="final-mission"></div>
+      <div class="actions">
+        <button class="btn" id="go-again" type="button">다시 탐험하기</button>
+        <button class="btn ghost" id="go-review" type="button">여권 다시 보기</button>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer>
+  <span>세계 문화 탐험 여권 &mdash; 문화 탐구 및 체험 활동</span>
+  <span class="mono">6 COUNTRIES · 24 QUESTIONS · 5 ROLES</span>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var ROLES = [
+    { id: "research", name: "자료 조사원", tag: "출처를 찾는 사람",
+      mission: "맡은 나라를 하나 골라, 대사관·박물관·유네스코 자료에서 <strong>출처 3개</strong>를 찾아 조사 카드 한 장을 채우세요. 블로그 요약본은 출처로 세지 않습니다." },
+    { id: "language", name: "인사말 담당", tag: "말을 옮기는 사람",
+      mission: "게임에 나온 인사말 여섯 개를 <strong>원어 표기·발음·뜻</strong>까지 카드로 만들어 반 친구들에게 가르치세요. 어느 언어의 말인지 반드시 밝힙니다." },
+    { id: "hands", name: "체험 기획자", tag: "직접 해보게 하는 사람",
+      mission: "각 나라 지면에 적힌 체험 중 하나를 골라 <strong>20분 안에 끝나는 진행표</strong>를 쓰세요. 먼저 혼자 해 보고 걸린 시간을 재 옵니다." },
+    { id: "record", name: "기록·촬영 담당", tag: "남기는 사람",
+      mission: "체험 과정을 사진 10장과 친구들이 한 말 5줄로 남기세요. 얼굴이 나오는 사진은 <strong>찍기 전에</strong> 당사자에게 묻습니다." },
+    { id: "host", name: "진행·발표 담당", tag: "이끄는 사람",
+      mission: "모둠 발표 5분을 이끌고, 마지막에 반드시 <strong>&lsquo;우리가 모르는 채 남겨 둔 것&rsquo;</strong> 한 가지를 밝히세요. 빈칸은 흠이 아닙니다." }
+  ];
+
+  var COUNTRIES = [
+    {
+      id: "peru", code: "SW-01", name: "페루", sub: "안데스 · 남아메리카", sw: "sw-peru",
+      hands: "색지 띠를 엮어 아과요 줄무늬 짜기 &mdash; 색 배열은 마을마다 다릅니다. 우리 반만의 배열을 정해 보세요.",
+      qs: [
+        { type: "객관식", q: "안데스에서 등에 짐과 아기를 지고 나를 때 쓰는, 색색의 띠를 짜 만든 직물은?",
+          o: ["아과요", "켄테", "바틱", "젤라바"], a: 0,
+          why: "아과요(aguayo)입니다. 색과 줄무늬 배열이 마을·집안마다 달라서, 천만 보고도 어디 사람인지 짐작할 수 있습니다." },
+        { type: "참 / 거짓", q: "페루는 안데스 산맥 하나로 이루어진 나라다.",
+          o: ["참", "거짓"], a: 1,
+          why: "거짓입니다. 태평양 쪽 사막 해안, 안데스 고원, 아마존 열대우림 &mdash; 세 지역의 삶이 전혀 다릅니다. 인구가 가장 많은 곳은 해안의 수도 리마이고, 마추픽추 사진 한 장이 페루의 전부가 아닙니다." },
+        { type: "객관식", q: "뜨겁게 달군 돌을 땅에 묻어 고기와 감자를 익히는 안데스 요리는?",
+          o: ["세비체", "파차망카", "몰레", "타코"], a: 1,
+          why: "파차망카입니다. 케추아어로 pacha는 대지, manka는 솥 &mdash; 이름 그대로 &lsquo;대지의 솥&rsquo;입니다." },
+        { type: "인사말", q: "케추아어로 &ldquo;잘 지내?&rdquo;에 해당하는 인사는?",
+          o: ["Allianchu (알리얀추)", "Akwaaba (아콰바)", "Selamat pagi (슬라맛 빠기)", "Salam (살람)"], a: 0,
+          why: "Allianchu입니다. 케추아어는 잉카 시대부터 이어진 언어로, 지금도 안데스 여러 나라에서 수백만 명이 씁니다. 페루의 언어가 스페인어 하나뿐인 것이 아닙니다." }
+      ]
+    },
+    {
+      id: "morocco", code: "SW-02", name: "모로코", sub: "마그레브 · 북아프리카", sw: "sw-morocco",
+      hands: "컴퍼스로 정팔각별 하나를 그려 젤리즈 한 조각 만들기 &mdash; 조각을 모아 교실 벽에 큰 무늬로 이어 붙이세요.",
+      qs: [
+        { type: "객관식", q: "손으로 깎은 타일을 별 모양으로 빈틈없이 맞춰 벽과 바닥을 채우는 모로코의 기법은?",
+          o: ["아딩크라", "젤리즈", "파펠 피카도", "바틱"], a: 1,
+          why: "젤리즈(zellij)입니다. 도안을 그린 뒤 타일을 하나하나 망치로 깎아 맞춥니다. 별의 꼭짓점 수를 늘려 가며 무한히 이어지는 무늬를 만듭니다." },
+        { type: "참 / 거짓", q: "모로코 원주민을 &lsquo;베르베르&rsquo;라고 부르는 것이 가장 존중하는 표현이다.",
+          o: ["참", "거짓"], a: 1,
+          why: "거짓입니다. &lsquo;베르베르&rsquo;는 바깥에서 붙인 이름입니다. 당사자들은 스스로를 <b>아마지그</b>(Amazigh, &lsquo;자유로운 사람&rsquo;)라고 부릅니다. 어떻게 불리고 싶은지부터 묻는 것이 존중의 시작입니다." },
+        { type: "객관식", q: "모로코에서 민트차를 따를 때 주전자를 높이 들어 올리는 까닭은?",
+          o: ["물의 양을 재려고", "거품을 내고 향을 퍼뜨리려고", "종교적 금기 때문에", "손님을 놀래키려고"], a: 1,
+          why: "높이서 떨어뜨리면 거품이 일고 차가 알맞게 식으며 향이 퍼집니다. 사하라 지역에는 &lsquo;첫 잔은 삶처럼 부드럽고, 둘째 잔은 사랑처럼 진하고, 셋째 잔은 죽음처럼 쓰다&rsquo;는 말이 전해집니다." },
+        { type: "인사말", q: "아마지그 사람들의 말인 타마지트어 인사는?",
+          o: ["Niltze (닐체)", "Hola (올라)", "Azul (아줄)", "Allianchu (알리얀추)"], a: 2,
+          why: "Azul입니다. 모로코에서는 다리자 아랍어의 Salam(살람)과 함께 쓰입니다. 한 나라 안에도 여러 언어가 나란히 삽니다." }
+      ]
+    },
+    {
+      id: "indonesia", code: "SW-03", name: "인도네시아", sub: "동남아시아 · 군도", sw: "sw-indonesia",
+      hands: "앙클룽 원리 그대로, 한 사람이 한 음씩 유리컵을 맡아 노래 한 곡 완주하기 &mdash; 한 명만 빠져도 곡이 끊깁니다.",
+      qs: [
+        { type: "객관식", q: "밀랍으로 그림을 막고 물을 들여 무늬를 내는, 2009년 유네스코에 등재된 인도네시아의 천은?",
+          o: ["바틱", "아과요", "켄테", "젤리즈"], a: 0,
+          why: "바틱입니다. 밀랍이 묻은 자리는 물이 들지 않아 무늬로 남습니다. 무늬마다 이름과 쓰임이 정해져 있어, 예식용과 일상용이 다릅니다." },
+        { type: "객관식", q: "대나무 악기 앙클룽에서 연주자 한 사람이 맡는 음은 몇 개일까요?",
+          o: ["한 개", "세 개", "한 옥타브 전부", "연주자가 정하는 만큼"], a: 0,
+          why: "한 개입니다. 흔들면 정해진 한 음만 납니다. 그래서 곡 하나를 연주하려면 반드시 여러 사람이 필요합니다 &mdash; 역할 분담이 곧 악기의 구조인 셈입니다." },
+        { type: "참 / 거짓", q: "인도네시아 사람들은 모두 같은 언어를 쓰고 같은 종교를 믿는다.",
+          o: ["참", "거짓"], a: 1,
+          why: "거짓입니다. 1만 7천여 개의 섬에 700개가 넘는 지역어가 있고 종교도 여럿입니다. 공용어인 인도네시아어는 서로 다른 말을 쓰는 사람들이 함께 쓰려고 다듬은 언어입니다. 발리는 그중 섬 하나일 뿐입니다." },
+        { type: "인사말", q: "인도네시아어로 &ldquo;좋은 아침&rdquo;은?",
+          o: ["Salam (살람)", "Selamat pagi (슬라맛 빠기)", "Azul (아줄)", "Akwaaba (아콰바)"], a: 1,
+          why: "Selamat pagi입니다. selamat은 &lsquo;평안&rsquo;, pagi는 &lsquo;아침&rsquo;. 낮에는 siang, 저녁에는 malam으로 바꿔 씁니다." }
+      ]
+    },
+    {
+      id: "mongolia", code: "SW-04", name: "몽골", sub: "내륙 아시아 · 초원", sw: "sw-mongolia",
+      hands: "우산살과 전지로 게르 모형 세우기 &mdash; 왜 원형인지, 왜 문이 늘 남쪽을 보는지 세워 보며 답을 찾으세요.",
+      qs: [
+        { type: "객관식", q: "머리 부분에 말 모양을 새긴 몽골의 두 줄 현악기는?",
+          o: ["차랑고", "앙클룽", "모린호르 (마두금)", "젬베"], a: 2,
+          why: "모린호르, 우리말로 마두금입니다. 2003년 유네스코 인류무형문화유산에 올랐습니다. 말과 함께 살아온 삶이 악기 모양에 그대로 남았습니다." },
+        { type: "참 / 거짓", q: "오늘날 몽골 사람 대부분은 초원에서 유목 생활을 한다.",
+          o: ["참", "거짓"], a: 1,
+          why: "거짓입니다. 인구의 절반가량이 수도 울란바토르에 삽니다. 아파트에 살며 지하철 대신 버스로 출근하는 삶이 지금의 몽골에도 있습니다. 한 나라를 사진 한 장의 이미지로 굳히지 않는 것이 중요합니다." },
+        { type: "객관식", q: "몽골의 나담 축제 세 종목에 <b>들어가지 않는</b> 것은?",
+          o: ["씨름", "활쏘기", "말달리기", "수영"], a: 3,
+          why: "수영입니다. 나담은 씨름·활쏘기·말달리기 세 종목으로 이루어지며, &lsquo;남자의 세 가지 경기&rsquo;라 불리지만 활쏘기와 말달리기에는 여성과 어린이도 나섭니다." },
+        { type: "객관식", q: "몽골의 이동식 집을 부르는 올바른 이름은?",
+          o: ["게르", "유르트", "티피", "이글루"], a: 0,
+          why: "게르(ger)입니다. 흔히 쓰는 &lsquo;유르트&rsquo;는 튀르크계 언어에서 온 말이고, 몽골에서는 게르라고 합니다. 그 문화가 스스로 쓰는 이름으로 부르는 것 &mdash; 아주 작지만 확실한 존중입니다." }
+      ]
+    },
+    {
+      id: "ghana", code: "SW-05", name: "가나", sub: "서아프리카 · 기니만", sw: "sw-ghana",
+      hands: "지우개를 파서 아딩크라 도장 만들기 &mdash; 산코파를 새기고 그 뜻을 각자 자기 문장으로 풀어 쓰세요.",
+      qs: [
+        { type: "객관식", q: "좁은 띠를 여러 장 짜서 이어 붙이는, 색과 무늬마다 뜻이 정해진 가나의 천은?",
+          o: ["바틱", "켄테", "아과요", "파펠 피카도"], a: 1,
+          why: "켄테입니다. 좁은 베틀로 띠를 짜 이어 붙이며, 무늬마다 이름과 속담이 붙어 있습니다. 아무 자리에서나 두르는 옷이 아니라 격식 있는 자리의 옷입니다." },
+        { type: "객관식", q: "뒤를 돌아 알을 무는 새 모양의 아딩크라 상징 &lsquo;산코파&rsquo;가 담은 뜻은?",
+          o: ["앞만 보고 나아가라", "돌아가서 가져오라", "말을 아껴라", "함께 있으면 강하다"], a: 1,
+          why: "&ldquo;돌아가서 가져오라&rdquo; &mdash; 지나온 것에서 배워 앞으로 나아가라는 뜻입니다. 아딩크라는 속담 하나를 그림 하나로 압축한 상징 체계입니다." },
+        { type: "참 / 거짓", q: "&lsquo;아프리카 음식&rsquo;은 하나의 요리 갈래를 정확히 가리키는 말이다.",
+          o: ["참", "거짓"], a: 1,
+          why: "거짓입니다. 아프리카는 나라가 아니라 54개국이 있는 대륙입니다. &lsquo;아프리카 음식&rsquo;은 &lsquo;아시아 음식&rsquo;만큼이나 뭉뚱그린 말입니다. 가나 요리, 그중에서도 어느 지역 요리인지까지 말할 수 있으면 좋습니다." },
+        { type: "인사말", q: "가나 트위어로 &ldquo;환영합니다&rdquo;는?",
+          o: ["Akwaaba (아콰바)", "Niltze (닐체)", "Allianchu (알리얀추)", "Selamat pagi (슬라맛 빠기)"], a: 0,
+          why: "Akwaaba입니다. 공항에서부터 이 말이 걸려 있습니다. 가나의 공용어는 영어지만, 실제 생활에서는 트위어·에웨어 같은 말이 함께 쓰입니다." }
+      ]
+    },
+    {
+      id: "mexico", code: "SW-06", name: "멕시코", sub: "메소아메리카 · 북아메리카", sw: "sw-mexico",
+      hands: "색지를 접어 파펠 피카도 오리기 &mdash; 기억하고 싶은 사람이나 일을 무늬에 담아 교실을 가로질러 거세요.",
+      qs: [
+        { type: "객관식", q: "색종이를 접어 오려 만든 뒤 줄에 매달아 거는 멕시코의 장식은?",
+          o: ["젤리즈", "켄테", "파펠 피카도", "아딩크라"], a: 2,
+          why: "파펠 피카도(papel picado), &lsquo;구멍 낸 종이&rsquo;라는 뜻입니다. 얇아서 바람에 흔들리는데, 그 흔들림을 두고 세상을 떠난 이들이 지나가는 자리라고도 말합니다." },
+        { type: "참 / 거짓", q: "망자의 날(Día de Muertos)은 멕시코식 할로윈이다.",
+          o: ["참", "거짓"], a: 1,
+          why: "거짓입니다. 겁을 주거나 분장을 즐기는 날이 아니고, 슬퍼하는 날도 아닙니다. 세상을 떠난 가족이 돌아오는 날을 그들이 좋아하던 음식과 꽃으로 맞이하는 자리입니다. 놀이 소품처럼 다루지 않는 것이 예의입니다." },
+        { type: "객관식", q: "망자의 날에 길을 밝혀 준다고 여겨 제단과 길에 뿌리는 노란 꽃은?",
+          o: ["해바라기", "셈파수칠 (금잔화)", "장미", "국화"], a: 1,
+          why: "셈파수칠(cempasúchil)입니다. 나우아틀어에서 온 이름으로, 진한 색과 향이 돌아오는 이들에게 길을 알려 준다고 여깁니다." },
+        { type: "인사말", q: "멕시코의 원주민 언어인 나우아틀어의 인사는?",
+          o: ["Niltze (닐체)", "Azul (아줄)", "Akwaaba (아콰바)", "Salam (살람)"], a: 0,
+          why: "Niltze입니다. 멕시코에는 스페인어 말고도 68개 원주민 언어가 국가 언어로 인정돼 있습니다. 초콜릿·토마토·아보카도 같은 말도 나우아틀어에서 왔습니다." }
+      ]
+    }
+  ];
+
+  var TOTAL_Q = COUNTRIES.length * 4;
+  var KEY = "culture-passport-v1";
+  var LETTERS = ["A", "B", "C", "D"];
+
+  var state = { role: null, results: {} };
+
+  /* ── 저장 ── */
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (!raw) { return null; }
+      var v = JSON.parse(raw);
+      if (v && typeof v === "object" && v.results) { return v; }
+    } catch (e) { /* 저장이 막힌 브라우저에서도 게임은 그대로 됩니다 */ }
+    return null;
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* 무시 */ }
+  }
+  function clear() {
+    try { localStorage.removeItem(KEY); } catch (e) { /* 무시 */ }
+  }
+
+  /* ── 화면 전환 ── */
+  var screens = {};
+  ["start", "role", "passport", "quiz", "result", "final"].forEach(function (k) {
+    screens[k] = document.getElementById("s-" + k);
+  });
+
+  function show(name) {
+    Object.keys(screens).forEach(function (k) { screens[k].hidden = (k !== name); });
+    var first = screens[name].querySelector("h1, h2, .qtext, .stamp strong, .miss strong");
+    if (first) {
+      first.setAttribute("tabindex", "-1");
+      first.focus({ preventScroll: true });
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  /* ── 상단 진행 ── */
+  var tallyText = document.getElementById("tally-text");
+  var pips = document.getElementById("pips");
+
+  function stampCount() {
+    return COUNTRIES.filter(function (c) {
+      var r = state.results[c.id];
+      return r && r.correct >= 3;
+    }).length;
+  }
+  function correctCount() {
+    return COUNTRIES.reduce(function (n, c) {
+      var r = state.results[c.id];
+      return n + (r ? r.correct : 0);
+    }, 0);
+  }
+
+  function paintTop() {
+    tallyText.textContent = "도장 " + stampCount() + " / 6 · 정답 " + correctCount() + " / " + TOTAL_Q;
+    pips.textContent = "";
+    COUNTRIES.forEach(function (c) {
+      var r = state.results[c.id];
+      var el = document.createElement("span");
+      el.className = "pip" + (r && r.correct >= 3 ? " on" : "");
+      pips.appendChild(el);
+    });
+  }
+
+  /* ── 역할 화면 ── */
+  var roleList = document.getElementById("role-list");
+  var goPassport = document.getElementById("go-passport");
+
+  ROLES.forEach(function (role) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "role-btn";
+    b.setAttribute("aria-pressed", "false");
+    b.innerHTML = "<b>" + role.name + "</b><span>" + role.tag + "</span>";
+    b.addEventListener("click", function () {
+      state.role = role.id;
+      Array.prototype.forEach.call(roleList.children, function (el) {
+        el.setAttribute("aria-pressed", el === b ? "true" : "false");
+      });
+      goPassport.disabled = false;
+      save();
+    });
+    roleList.appendChild(b);
+  });
+
+  function currentRole() {
+    return ROLES.filter(function (r) { return r.id === state.role; })[0] || ROLES[0];
+  }
+
+  /* ── 여권 화면 ── */
+  var pageList = document.getElementById("page-list");
+  var passportTitle = document.getElementById("passport-title");
+  var passportSub = document.getElementById("passport-sub");
+
+  function paintPassport() {
+    pageList.textContent = "";
+    COUNTRIES.forEach(function (c) {
+      var r = state.results[c.id];
+      var got = r && r.correct >= 3;
+
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "page-btn";
+      b.innerHTML =
+        '<div class="band swatch ' + c.sw + '"></div>' +
+        '<div class="meta"><span class="mono">' + c.code + " · " + c.sub + "</span>" +
+        "<b>" + c.name + "</b>" +
+        '<span class="score' + (r ? "" : " todo") + '">' +
+          (r ? r.correct + " / 4 정답" + (got ? " · 도장 획득" : " · 도장 미획득") : "아직 가지 않음") +
+        "</span></div>" +
+        (got ? '<span class="mark">ENTRY</span>' : "");
+      b.addEventListener("click", function () { startQuiz(c); });
+      pageList.appendChild(b);
+    });
+
+    var done = COUNTRIES.every(function (c) { return state.results[c.id]; });
+    if (done) {
+      passportTitle.textContent = "여섯 나라를 모두 돌았습니다";
+      passportSub.textContent = "결과를 보거나, 도장을 못 받은 나라를 다시 눌러 도전할 수 있습니다.";
+    } else {
+      passportTitle.textContent = "어느 나라부터 갈까요?";
+      passportSub.textContent = "각 지면의 무늬는 그 문화가 실제로 짜거나 새기는 문양입니다. 하나를 골라 들어가세요.";
+    }
+
+    var seeFinal = document.getElementById("go-final");
+    if (seeFinal) { seeFinal.remove(); }
+    if (done) {
+      var f = document.createElement("button");
+      f.type = "button";
+      f.id = "go-final";
+      f.className = "btn";
+      f.textContent = "탐험 기록 보기";
+      f.addEventListener("click", paintFinal);
+      document.getElementById("go-reset").parentNode.insertBefore(f, document.getElementById("go-reset"));
+    }
+    paintTop();
+  }
+
+  /* ── 퀴즈 ── */
+  var quiz = { country: null, i: 0, correct: 0 };
+
+  var qCountry = document.getElementById("q-country");
+  var qCount = document.getElementById("q-count");
+  var qType = document.getElementById("q-type");
+  var qText = document.getElementById("q-text");
+  var qOpts = document.getElementById("q-opts");
+  var qWhy = document.getElementById("q-why");
+  var whyLabel = document.getElementById("why-label");
+  var whyText = document.getElementById("why-text");
+  var goNext = document.getElementById("go-next");
+
+  function startQuiz(country) {
+    quiz = { country: country, i: 0, correct: 0 };
+    show("quiz");
+    paintQuestion();
+  }
+
+  function paintQuestion() {
+    var c = quiz.country;
+    var q = c.qs[quiz.i];
+
+    qCountry.textContent = c.name;
+    qCount.textContent = "Q" + (quiz.i + 1) + " / " + c.qs.length;
+    qType.textContent = q.type;
+    qText.innerHTML = q.q;
+    qWhy.hidden = true;
+    goNext.hidden = true;
+    qOpts.textContent = "";
+
+    q.o.forEach(function (text, idx) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "opt";
+      b.innerHTML = '<span class="key">' + LETTERS[idx] + "</span><span>" + text + "</span>";
+      b.addEventListener("click", function () { answer(idx); });
+      qOpts.appendChild(b);
+    });
+  }
+
+  function answer(picked) {
+    var q = quiz.country.qs[quiz.i];
+    var right = picked === q.a;
+    if (right) { quiz.correct += 1; }
+
+    Array.prototype.forEach.call(qOpts.children, function (el, idx) {
+      el.disabled = true;
+      if (idx === q.a) { el.classList.add("right"); }
+      else if (idx === picked) { el.classList.add("wrong"); }
+      else { el.classList.add("dim"); }
+    });
+
+    qWhy.className = "why " + (right ? "ok" : "no");
+    whyLabel.textContent = right ? "정답 · 해설" : "아쉽습니다 · 해설";
+    whyText.innerHTML = q.why;
+    qWhy.hidden = false;
+
+    goNext.hidden = false;
+    goNext.textContent = quiz.i + 1 < quiz.country.qs.length ? "다음 문제" : "결과 보기";
+    goNext.focus({ preventScroll: true });
+  }
+
+  goNext.addEventListener("click", function () {
+    if (quiz.i + 1 < quiz.country.qs.length) {
+      quiz.i += 1;
+      paintQuestion();
+    } else {
+      finishCountry();
+    }
+  });
+
+  document.getElementById("go-quit").addEventListener("click", function () {
+    paintPassport();
+    show("passport");
+  });
+
+  /* ── 나라 결과 ── */
+  var resultStamp = document.getElementById("result-stamp");
+  var resultTally = document.getElementById("result-tally");
+  var resultNote = document.getElementById("result-note");
+
+  function finishCountry() {
+    var c = quiz.country;
+    var prev = state.results[c.id];
+    if (!prev || quiz.correct > prev.correct) {
+      state.results[c.id] = { correct: quiz.correct };
+    }
+    save();
+
+    var got = quiz.correct >= 3;
+    resultStamp.innerHTML = got
+      ? '<div class="stamp"><span class="mono">ENTRY · 입국 허가</span><strong>' + c.name +
+        '</strong><span class="mono">' + c.code + "</span></div>"
+      : '<div class="miss"><strong>도장 보류</strong><span class="mono">3문제 이상 맞히면 획득</span></div>';
+
+    resultTally.innerHTML = "<b>" + quiz.correct + " / " + c.qs.length + "</b><br>" +
+      (got ? "이 나라의 도장을 받았습니다." : "해설을 한 번 읽고 다시 도전해 보세요.");
+
+    resultNote.innerHTML = '<span class="mono">여기서 실제로 해볼 것</span><p>' + c.hands + "</p>";
+
+    paintTop();
+    show("result");
+  }
+
+  document.getElementById("go-back").addEventListener("click", function () {
+    paintPassport();
+    show("passport");
+  });
+  document.getElementById("go-retry").addEventListener("click", function () {
+    startQuiz(quiz.country);
+  });
+
+  /* ── 최종 ── */
+  var finalGrade = document.getElementById("final-grade");
+  var finalLine = document.getElementById("final-line");
+  var finalStamps = document.getElementById("final-stamps");
+  var finalMission = document.getElementById("final-mission");
+
+  function paintFinal() {
+    var n = correctCount();
+    var s = stampCount();
+    var grade, line;
+
+    if (n >= 22) {
+      grade = "문화 탐험 대장";
+      line = "여섯 지면을 거의 다 읽어 냈습니다. 이제 아는 것을 남에게 설명할 차례입니다.";
+    } else if (n >= 17) {
+      grade = "눈이 열린 여행자";
+      line = "익숙한 오해 몇 가지를 스스로 걷어 냈습니다. 틀린 문제의 해설을 한 번 더 읽어 보세요.";
+    } else if (n >= 11) {
+      grade = "견습 탐험가";
+      line = "절반은 지나왔습니다. 도장을 못 받은 나라부터 다시 들어가 보세요.";
+    } else {
+      grade = "여권을 막 받은 사람";
+      line = "몰랐다는 걸 알게 된 것이 첫 걸음입니다. 해설을 읽으며 한 바퀴 더 돌아 보세요.";
+    }
+
+    finalGrade.textContent = grade;
+    finalLine.textContent = "정답 " + n + " / " + TOTAL_Q + " · 도장 " + s + " / 6 — " + line;
+
+    finalStamps.textContent = "";
+    COUNTRIES.forEach(function (c) {
+      var r = state.results[c.id];
+      var got = r && r.correct >= 3;
+      var el = document.createElement("div");
+      el.className = "mini-stamp" + (got ? " got" : "");
+      el.innerHTML = c.name + '<span class="mono">' + (got ? "ENTRY" : "—") + "</span>";
+      finalStamps.appendChild(el);
+    });
+
+    var role = currentRole();
+    finalMission.innerHTML =
+      '<span class="mono">' + role.name + "의 체험 미션</span>" +
+      "<p>" + role.mission + "</p>" +
+      "<p>퀴즈는 여기까지입니다. <strong>진짜 활동은 지금부터</strong>예요 &mdash; 손으로 만들어 보고, " +
+      "모둠끼리 나누고, 마지막에 &lsquo;내 생각이 바뀐 지점&rsquo;을 한 줄 써서 붙이세요.</p>";
+
+    paintTop();
+    show("final");
+  }
+
+  document.getElementById("go-review").addEventListener("click", function () {
+    paintPassport();
+    show("passport");
+  });
+
+  /* ── 시작·초기화 ── */
+  function resetAll() {
+    state = { role: state.role, results: {} };
+    clear();
+    save();
+    paintTop();
+  }
+
+  document.getElementById("go-start").addEventListener("click", function () {
+    resetAll();
+    Array.prototype.forEach.call(roleList.children, function (el, idx) {
+      el.setAttribute("aria-pressed", ROLES[idx].id === state.role ? "true" : "false");
+    });
+    goPassport.disabled = !state.role;
+    show("role");
+  });
+
+  goPassport.addEventListener("click", function () {
+    paintPassport();
+    show("passport");
+  });
+
+  document.getElementById("go-reset").addEventListener("click", function () {
+    resetAll();
+    show("start");
+  });
+
+  document.getElementById("go-again").addEventListener("click", function () {
+    resetAll();
+    show("start");
+  });
+
+  /* ── 부팅 ── */
+  var saved = load();
+  if (saved) {
+    state = saved;
+    if (Object.keys(state.results).length > 0) {
+      var resume = document.getElementById("go-resume");
+      resume.hidden = false;
+      resume.addEventListener("click", function () {
+        paintPassport();
+        show("passport");
+      });
+    }
+  }
+  paintTop();
+})();
+</script>
+</body>
+</html>
